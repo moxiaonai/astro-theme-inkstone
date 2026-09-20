@@ -1,0 +1,6 @@
+---
+import LogoMark from './LogoMark.astro';
+import { site } from '../site';
+const year = new Date().getFullYear();
+---
+<footer class="site-footer"><div class="site-footer__inner"><LogoMark size="sm"/><p>© {year} {site.title}</p><div class="site-footer__links" aria-label="页脚链接">{site.social.map((item) => <a href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel={item.href.startsWith('http') ? 'noopener noreferrer' : undefined}>{item.label}</a>)}</div></div></footer>

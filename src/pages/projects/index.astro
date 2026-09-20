@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectCard from '../../theme/components/ProjectCard.astro';
+import { projects } from '../../theme/site';
+---
+<BaseLayout title="项目" description="展示与写作、静态发布、内容发现和个人知识库相关的示例项目。">
+  <div class="page-shell">
+    <section class="page-hero">
+      <p class="eyebrow">Projects</p>
+      <h1>项目</h1>
+      <p>把文章、笔记、工具和实验整理成可以持续迭代的作品集。</p>
+    </section>
+    <section class="project-grid page-list" aria-label="项目列表">
+      {projects.map((project) => <ProjectCard project={project}/>)}
+    </section>
+  </div>
+</BaseLayout>

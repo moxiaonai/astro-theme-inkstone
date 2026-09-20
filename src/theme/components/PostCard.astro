@@ -1,0 +1,28 @@
+---
+import type { BlogPost } from '../../lib/posts';
+import { formatDate, getPostDescription, getPostSlug, getPostTitle } from '../../lib/posts';
+interface Props { post: BlogPost; variant?: 'index'; }
+const { post, variant } = Astro.props;
+const cardClass = variant === 'index' ? 'lift-card post-card post-card--index' : 'lift-card post-card';
+const href = `/blog/${getPostSlug(post)}/`;
+const description = getPostDescription(post);
+---
+<a class={cardClass} href={href}>
+  <span class="lift-card__hover" aria-hidden="true"></span>
+  <span class="lift-card__shadow" aria-hidden="true"></span>
+  <span class="lift-card__content post-card__content">
+    <span class="post-card__title">
+      <span class="post-card__title-text">{getPostTitle(post)}</span>
+      <span class="card-arrow" aria-hidden="true">↗</span>
+    </span>
+    {description && <span class="post-card__description">{description}</span>}
+    <span class="post-card__meta">
+      <time datetime={post.data.pubDate?.toISOString()}>{formatDate(post.data.pubDate)}</time>
+      {post.data.tags.length > 0 && (
+        <span class="post-card__meta-tags" aria-label="标签">
+          {post.data.tags.map((tag) => <span class="tag">{tag}</span>)}
+        </span>
+      )}
+    </span>
+  </span>
+</a>

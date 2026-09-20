@@ -1,0 +1,34 @@
+---
+interface Project {
+  id: string;
+  title: string;
+  description: string;
+  url: string;
+  repo?: string;
+  accent?: string;
+  cover?: string;
+  stars?: string;
+}
+
+interface Props { project: Project; }
+
+const { project } = Astro.props;
+const isExternal = project.url.startsWith('http');
+---
+
+<a class:list={['lift-card', 'project-card', project.accent ? 'project-card--' + project.accent : undefined]} href={project.url} title={project.title} target={isExternal ? '_blank' : undefined} rel={isExternal ? 'noopener noreferrer' : undefined}>
+  <span class="lift-card__hover" aria-hidden="true"></span>
+  <span class="lift-card__shadow" aria-hidden="true"></span>
+  <span class="lift-card__content project-card__content">
+    {project.cover && <img class="project-card__cover" src={project.cover} width="1200" height="630" alt="" loading="lazy" />}
+    <span class="project-card__body">
+      <span class="project-card__title">
+        <span class="project-card__title-text">{project.title}</span>
+        <span class="card-arrow" aria-hidden="true">↗</span>
+        {project.stars && <span class="project-card__badge">★ {project.stars}</span>}
+      </span>
+      <span class="project-card__description">{project.description}</span>
+    </span>
+  </span>
+</a>
+

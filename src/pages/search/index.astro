@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDate, getPostDescription, getPostSlug, getPostTitle, getPublishedPosts } from '../../lib/posts';
+const posts = await getPublishedPosts();
+const index = posts.map((post) => ({ title: getPostTitle(post), description: getPostDescription(post), href: `/blog/${getPostSlug(post)}/`, date: formatDate(post.data.pubDate), tags: post.data.tags }));
+---
+<BaseLayout title="搜索" description="搜索这个博客中的文章标题、摘要、发布时间和主题标签。">
+  <div class="page-shell">
+    <section class="page-hero">
+      <p class="eyebrow">Search</p>
+      <h1>搜索</h1>
+      <p>在本地生成的文章索引里搜索标题、摘要和标签。</p>
+    </section>
+    <section class="search-panel">
+      <label class="sr-only" for="searchInput">搜索文章</label>
+      <input id="searchInput" class="search-input" type="search" placeholder="输入关键词，比如 Astro、Obsidian、Markdown" autocomplete="off"/>
+      <p id="searchCount" class="search-count"></p>
+      <div id="searchResults" class="search-results" aria-live="polite"></div>
+    </section>
+  </div>
+  <script id="search-data" type="application/json" set:html={JSON.stringify(index)}></script>
+  <script is:inline>
+    (() => {
+      const data = JSON.parse(document.getElementById('search-data')?.textContent || '[]');
+      const input = document.getElementById('searchInput');
+      const results = document.getElementById('searchResults');
+      const count = document.getElementById('searchCount');
+      const escapeHtml = (value) => String(value || '').replace(/[&<>"]/g, (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[ch]));
+      const getInitialQuery = () => new URLSearchParams(window.location.search).get('q') || '';
+      const updateUrl = (query) => {
+        const url = new URL(window.location.href);
+        const keyword = query.trim();
+
+        if (keyword) {
+          url.searchParams.set('q', keyword);
+        } else {
+          url.searchParams.delete('q');
+        }
+
+        window.history.replaceState({}, '', `${url.pathname}${url.search}${url.hash}`);
+      };
+      const render = (query = '') => {
+        const needle = query.trim().toLowerCase();
+        const items = needle
+          ? data.filter((item) => [item.title, item.description, item.date, ...(item.tags || [])].join(' ').toLowerCase().includes(needle))
+          : data;
+
+        if (count) count.textContent = `${items.length} 篇文章`;
+        if (!results) return;
+
+        results.innerHTML = items.map((item) => `<a class="search-result" href="${item.href}"><span class="search-result__meta">${escapeHtml(item.date)}</span><strong>${escapeHtml(item.title)}</strong>${item.description ? `<span>${escapeHtml(item.description)}</span>` : ''}${item.tags?.length ? `<small>${item.tags.map((tag) => `#${escapeHtml(tag)}`).join(' ')}</small>` : ''}</a>`).join('') || '<p class="empty-note">没有找到匹配的文章。</p>';
+      };
+      const initialQuery = getInitialQuery();
+
+      if (input) input.value = initialQuery;
+      input?.addEventListener('input', () => {
+        updateUrl(input.value);
+        render(input.value);
+      });
+      render(initialQuery);
+    })();
+  </script>
+</BaseLayout>

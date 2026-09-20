@@ -1,0 +1,5 @@
+---
+interface Props { label: string; }
+const { label } = Astro.props;
+---
+<div class="section-divider" aria-hidden="true"><div class="section-divider__line"></div><div class="section-divider__label"><span>{label}</span><span class="section-divider__arrow">↓</span></div></div>

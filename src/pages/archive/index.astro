@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDate, getPostSlug, getPostTitle, getPublishedPosts, groupPostsByYear } from '../../lib/posts';
+const posts = await getPublishedPosts();
+const groups = groupPostsByYear(posts);
+---
+<BaseLayout title="归档" description="按年份浏览 Inkstone 主题中的全部文章。">
+  <div class="page-shell">
+    <section class="page-hero">
+      <p class="eyebrow">Archive</p>
+      <h1>归档</h1>
+      <p>按发布时间整理所有文章，适合长期沉淀技术笔记、复盘和数字花园内容。</p>
+    </section>
+    <section class="archive-list">
+      {groups.map(([year, items]) => <div class="archive-year"><h2>{year}</h2><div>{items.map((post) => <a class="archive-item" href={'/blog/' + getPostSlug(post) + '/'}><time datetime={post.data.pubDate?.toISOString()}>{formatDate(post.data.pubDate)}</time><span>{getPostTitle(post)}</span></a>)}</div></div>)}
+    </section>
+  </div>
+</BaseLayout>

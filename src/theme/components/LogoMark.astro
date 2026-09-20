@@ -1,0 +1,8 @@
+---
+import { site } from '../site';
+interface Props { size?: 'sm' | 'md'; }
+const { size = 'md' } = Astro.props;
+---
+<a class:list={['logo-mark', 'logo-mark--' + size]} href="/" title={site.title} aria-label={site.title}>
+  <img class="logo-mark__image" src="/images/theme/site-logo.svg" alt={site.shortTitle} width="96" height="96" decoding="async" />
+</a>
