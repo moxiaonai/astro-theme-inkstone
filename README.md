@@ -38,7 +38,9 @@ Inkstone 是“砚台”。这个名字想表达的是：一个博客主题不�
 
 ## 预览
 
-你可以先在本地启动预览。正式开源时，建议在这里补上在线 Demo 和浅色 / 深色截图。
+![Inkstone light and dark diagonal preview](public/images/site/light-dark-preview.png)
+
+上图把首页的 Light / Dark 两种状态按对角线拼接在一起，方便快速感受主题的整体气质。你也可以先在本地启动预览；正式发布后，建议把 Demo 地址替换成你的线上站点。
 
 ```txt
 Demo: https://your-domain.com
@@ -181,7 +183,7 @@ featured: false
 │   └── images/
 │       ├── posts/       # 文章封面与正文图片
 │       ├── projects/    # 项目卡片图片
-│       ├── site/        # 社交分享图、关于页图片等
+│       ├── site/        # 社交分享图、README 预览图、关于页图片等
 │       └── theme/       # Logo、头像、首页插画
 ├── src/
 │   ├── content/
