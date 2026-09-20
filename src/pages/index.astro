@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import FriendLinks from '../theme/components/FriendLinks.astro';
+import HeroIllustration from '../theme/components/HeroIllustration.astro';
+import PostCard from '../theme/components/PostCard.astro';
+import ProjectCard from '../theme/components/ProjectCard.astro';
+import SectionDivider from '../theme/components/SectionDivider.astro';
+import { getPublishedPosts } from '../lib/posts';
+import { projects, site } from '../theme/site';
+
+const posts = await getPublishedPosts();
+const featuredProjects = projects.slice(0, 6);
+const latestPosts = posts.slice(0, 5);
+const rssUrl = new URL('/rss.xml', site.url).toString();
+---
+
+<BaseLayout description={site.description}>
+  <section class="home-hero">
+    <div class="home-hero__copy">
+      <h1>
+        <span class="about-wave" aria-hidden="true">✦</span>
+        <span class="about-gradient">{site.hero.greeting}</span>
+      </h1>
+      <p class="hero-typing" data-typed-phrases={JSON.stringify(site.hero.phrases)} aria-live="polite">
+        <span class="sr-only">{site.hero.phrases.join('；')}</span>
+        <span aria-hidden="true">{site.hero.phrases[0]}</span>
+      </p>
+      <div>
+        <a class="button button--primary" href={site.hero.cta.href} title={site.hero.cta.label}>{site.hero.cta.label}</a>
+      </div>
+    </div>
+    <HeroIllustration />
+  </section>
+
+  <SectionDivider label="打磨中的项目" />
+
+  <section class="section-shell" aria-labelledby="projects-title">
+    <div class="section-heading">
+      <h2 id="projects-title">项目</h2>
+      <p>用项目卡片展示你的工具、作品、实验和长期维护的开源计划。</p>
+    </div>
+
+    <div class="project-grid">
+      {featuredProjects.map((project) => <ProjectCard project={project} />)}
+    </div>
+
+    <div class="section-action">
+      <a class="button button--primary" href="/projects/" title="查看更多项目">查看更多项目</a>
+    </div>
+  </section>
+
+  <SectionDivider label="沉淀下来的文章" />
+
+  <section class="section-shell" aria-labelledby="posts-title">
+    <h2 id="posts-title">博客</h2>
+    <p>这里展示最近发布的文章。把 Markdown 放进 <code>src/content/blog</code>，配置 frontmatter 后就会自动出现。</p>
+
+    <div class="home-blog-wrap">
+      <div class="blog-article-list" id="blog-article">
+        <div class="post-list">
+          {latestPosts.length > 0 ? latestPosts.map((post) => <PostCard post={post} />) : <p class="empty-note">还没有发布文章。把 Markdown 放进 <code>src/content/blog</code> 并设置 frontmatter 后会显示在这里。</p>}
+        </div>
+
+        <div class="section-action">
+          <a class="button button--primary" href="/blog/" title="查看更多文章">查看更多文章</a>
+        </div>
+      </div>
+
+      <div class="rss-column">
+        <aside class="rss-card" aria-label="订阅博客">
+          <div class="rss-card__header">
+            <span class="rss-card__icon" aria-hidden="true">RSS</span>
+            <h3>订阅更新</h3>
+          </div>
+          <p>可以通过 <a href={rssUrl} title="Feedly">Feedly</a>，<a href={rssUrl} title="Inoreader">Inoreader</a> 或 <a href="/rss.xml" title="RSS">RSS</a> 订阅，RSS 地址：</p>
+          <div class="rss-card__actions">
+            <input class="rss-input" type="url" readonly value={rssUrl} aria-label="RSS 地址" />
+            <a class="button button--primary button--full" href="/rss.xml" title="打开 RSS">打开 RSS</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <SectionDivider label="构建这个主题的工具" />
+
+  <section class="section-shell section-shell--last" aria-labelledby="friends-title">
+    <div class="section-heading">
+      <h2 id="friends-title">工具</h2>
+      <p>Inkstone 默认围绕这些稳定、轻量的工具组织写作与发布。</p>
+    </div>
+    <FriendLinks />
+  </section>
+</BaseLayout>

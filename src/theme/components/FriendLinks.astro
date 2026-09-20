@@ -1,0 +1,4 @@
+---
+import { site } from '../site';
+---
+<div class="friend-grid">{site.friends.map((friend) => <a class="friend-link" href={friend.href} target="_blank" rel="noopener noreferrer"><span>{friend.label}</span><small>{friend.description}</small></a>)}</div>

@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../theme/components/PostCard.astro';
+import { getPublishedPosts } from '../../lib/posts';
+const posts = await getPublishedPosts();
+---
+<BaseLayout title="博客" description="技术文章列表，记录 Astro、Obsidian、前端工程、AI 工具和静态站点实践。">
+  <div class="page-shell blog-index-shell">
+    <section class="page-hero blog-index-hero">
+      <h1>博客</h1>
+    </section>
+    <section class="post-list page-list blog-index-list" aria-label="文章列表">
+      {posts.map((post) => <PostCard post={post} variant="index" />)}
+    </section>
+  </div>
+</BaseLayout>

@@ -1,0 +1,340 @@
+---
+import Header from '../theme/components/Header.astro';
+import Footer from '../theme/components/Footer.astro';
+import SquareGrid from '../theme/components/SquareGrid.astro';
+import { site } from '../theme/site';
+import '../theme/styles/theme.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  class?: string;
+  type?: 'website' | 'article';
+  canonicalPath?: string;
+  robots?: string;
+  tags?: readonly string[];
+  pubDate?: Date;
+  updatedDate?: Date;
+  schema?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const {
+  title = site.title,
+  description = site.description,
+  image = site.defaultImage,
+  type = 'website',
+  canonicalPath = Astro.url.pathname,
+  robots = 'index,follow',
+  tags = [],
+  pubDate,
+  updatedDate,
+  schema = []
+} = Astro.props;
+const pageTitle = title === site.title ? `${site.title} - ${site.tagline}` : `${title} | ${site.title}`;
+const canonical = new URL(canonicalPath, site.url).toString();
+const imageUrl = new URL(image, site.url).toString();
+const authorUrl = new URL(site.authorUrl, site.url).toString();
+const keywords = [...new Set([...site.keywords, ...tags])].join(', ');
+const schemaItems = Array.isArray(schema) ? schema : [schema];
+const structuredData = JSON.stringify([
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    '@id': `${site.url}/#website`,
+    url: site.url,
+    name: site.title,
+    alternateName: site.shortTitle,
+    description: site.description,
+    inLanguage: site.lang,
+    publisher: { '@id': `${site.url}/#person` },
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `${site.url}/search/?q={search_term_string}`,
+      'query-input': 'required name=search_term_string'
+    }
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    '@id': `${site.url}/#person`,
+    name: site.author,
+    url: authorUrl,
+    image: new URL('/images/theme/avatar-light.svg', site.url).toString()
+  },
+  ...schemaItems
+], null, 2);
+---
+<!doctype html>
+<html lang={site.lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta name="author" content={site.author} />
+    <meta name="keywords" content={keywords} />
+    <meta name="robots" content={robots} />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#171717" media="(prefers-color-scheme: dark)" />
+    <meta name="color-scheme" content="light dark" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:type" content={type} />
+    <meta property="og:locale" content="zh_CN" />
+    <meta property="og:site_name" content={site.title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:url" content={canonical} />
+    {type === 'article' && pubDate && <meta property="article:published_time" content={pubDate.toISOString()} />}
+    {type === 'article' && (updatedDate ?? pubDate) && <meta property="article:modified_time" content={(updatedDate ?? pubDate)?.toISOString()} />}
+    {type === 'article' && tags.map((tag) => <meta property="article:tag" content={tag} />)}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="application/rss+xml" title={site.title} href="/rss.xml" />
+    <link rel="alternate" type="text/plain" title={`${site.title} llms.txt`} href="/llms.txt" />
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+    <title>{pageTitle}</title>
+    <script type="application/ld+json" set:html={structuredData}></script>
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const applyInitialTheme = (theme) => {
+          root.classList.remove('dark', 'light');
+          root.classList.add(theme);
+          root.dataset.theme = theme;
+          root.style.colorScheme = theme;
+        };
+
+        try {
+          const savedTheme = localStorage.getItem('theme');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const theme = savedTheme === 'dark' || savedTheme === 'light'
+            ? savedTheme
+            : prefersDark
+              ? 'dark'
+              : 'light';
+          applyInitialTheme(theme);
+        } catch {
+          applyInitialTheme('light');
+        }
+      })();
+    </script>
+  </head>
+  <body class={Astro.props.class}>
+    <SquareGrid />
+    <Header currentPath={Astro.url.pathname} />
+    <main class="site-main">
+      <slot />
+    </main>
+    <Footer />
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const header = document.getElementById('site-header');
+        const menuButton = document.getElementById('openMenu');
+        const menu = document.getElementById('site-menu');
+        const themeButton = document.getElementById('darkToggle');
+        const typed = document.querySelector('[data-typed-phrases]');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        let isThemeTransitioning = false;
+
+        const getCurrentTheme = () => root.classList.contains('dark') ? 'dark' : 'light';
+
+        const syncThemeButton = () => {
+          const isDark = getCurrentTheme() === 'dark';
+          if (themeButton) {
+            themeButton.setAttribute('aria-label', isDark ? '切换到白天模式' : '切换到黑夜模式');
+            themeButton.dataset.theme = isDark ? 'dark' : 'light';
+          }
+        };
+
+        const persistTheme = (theme) => {
+          try {
+            localStorage.setItem('theme', theme);
+          } catch {}
+        };
+
+        const setTheme = (theme) => {
+          root.classList.remove('dark', 'light');
+          root.classList.add(theme);
+          root.dataset.theme = theme;
+          root.style.colorScheme = theme;
+          persistTheme(theme);
+          syncThemeButton();
+        };
+
+        const getThemeTransitionPoint = (event) => {
+          const rect = themeButton?.getBoundingClientRect();
+          const fallbackPoint = rect
+            ? { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 }
+            : { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+
+          if (event && (event.clientX || event.clientY)) {
+            return { x: event.clientX, y: event.clientY };
+          }
+
+          return fallbackPoint;
+        };
+
+        const createThemeRevealOverlay = (theme, initialClipPath) => {
+          const scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+          const pageHeight = Math.max(
+            document.body.scrollHeight,
+            document.documentElement.scrollHeight,
+            window.innerHeight
+          );
+          const overlay = document.createElement('div');
+          const content = document.createElement('div');
+
+          overlay.className = `theme-reveal-overlay theme-reveal-overlay--${theme}`;
+          document.body.classList.forEach((className) => overlay.classList.add(className));
+          overlay.setAttribute('aria-hidden', 'true');
+          overlay.style.clipPath = initialClipPath;
+          overlay.style.setProperty('-webkit-clip-path', initialClipPath);
+          content.className = 'theme-reveal-overlay__content';
+          content.style.minHeight = `${pageHeight}px`;
+          content.style.marginTop = `-${scrollY}px`;
+
+          Array.from(document.body.children).forEach((child) => {
+            if (child === overlay || child.classList?.contains('theme-reveal-overlay') || child.tagName === 'SCRIPT') {
+              return;
+            }
+            content.appendChild(child.cloneNode(true));
+          });
+
+          overlay.appendChild(content);
+          document.body.appendChild(overlay);
+
+          return overlay;
+        };
+
+        const animateThemeReveal = (overlay, fromClipPath, toClipPath) => overlay.animate(
+          [
+            { clipPath: fromClipPath, WebkitClipPath: fromClipPath },
+            { clipPath: toClipPath, WebkitClipPath: toClipPath },
+          ],
+          {
+            duration: 520,
+            easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+            fill: 'both',
+          }
+        ).finished;
+
+        const switchTheme = async (event) => {
+          if (isThemeTransitioning) return;
+
+          const currentTheme = getCurrentTheme();
+          const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+          if (!Element.prototype.animate || prefersReducedMotion.matches) {
+            setTheme(nextTheme);
+            return;
+          }
+
+          const { x, y } = getThemeTransitionPoint(event);
+          const radius = Math.hypot(
+            Math.max(x, window.innerWidth - x),
+            Math.max(y, window.innerHeight - y)
+          );
+          const startClipPath = `circle(0px at ${x}px ${y}px)`;
+          const endClipPath = `circle(${radius}px at ${x}px ${y}px)`;
+          const isToLight = nextTheme === 'light';
+          let overlay;
+
+          isThemeTransitioning = true;
+          root.classList.add('theme-reveal-is-running');
+
+          try {
+            if (isToLight) {
+              overlay = createThemeRevealOverlay(currentTheme, endClipPath);
+              setTheme(nextTheme);
+              await animateThemeReveal(overlay, endClipPath, startClipPath);
+            } else {
+              overlay = createThemeRevealOverlay(nextTheme, startClipPath);
+              await animateThemeReveal(overlay, startClipPath, endClipPath);
+              setTheme(nextTheme);
+            }
+          } catch {
+            setTheme(nextTheme);
+          } finally {
+            overlay?.remove();
+            requestAnimationFrame(() => {
+              root.classList.remove('theme-reveal-is-running');
+            });
+            isThemeTransitioning = false;
+          }
+        };
+
+        const syncHeader = () => {
+          const scrolled = window.scrollY > 8;
+          document.body.classList.toggle('is-scrolled', scrolled);
+          if (header) header.dataset.scrolled = scrolled ? 'true' : 'false';
+        };
+
+        syncThemeButton();
+        syncHeader();
+        window.addEventListener('scroll', syncHeader, { passive: true });
+        themeButton?.addEventListener('click', switchTheme);
+        menuButton?.addEventListener('click', () => {
+          const open = menuButton.getAttribute('aria-expanded') === 'true';
+          menuButton.setAttribute('aria-expanded', String(!open));
+          menu?.classList.toggle('is-open', !open);
+          menu?.setAttribute('aria-hidden', String(open));
+        });
+
+        if (typed && !prefersReducedMotion.matches) {
+          const phrases = JSON.parse(typed.getAttribute('data-typed-phrases') || '[]');
+          const target = typed.querySelector('span[aria-hidden="true"]');
+          const announcer = typed.querySelector('.sr-only');
+
+          if (target && phrases.length >= 2) {
+            const typingDelay = 72;
+            const deletingDelay = 34;
+            const holdDelay = 1800;
+            const switchDelay = 320;
+            let phraseIndex = 0;
+            let letterIndex = Array.from(phrases[phraseIndex]).length;
+            let isDeleting = true;
+
+            const renderPhrase = () => {
+              const letters = Array.from(phrases[phraseIndex]);
+              target.textContent = letters.slice(0, letterIndex).join('');
+            };
+
+            const tick = () => {
+              const letters = Array.from(phrases[phraseIndex]);
+              let delay = isDeleting ? deletingDelay : typingDelay;
+
+              if (isDeleting) {
+                letterIndex -= 1;
+                if (letterIndex <= 0) {
+                  letterIndex = 0;
+                  phraseIndex = (phraseIndex + 1) % phrases.length;
+                  isDeleting = false;
+                  delay = switchDelay;
+                }
+              } else {
+                letterIndex += 1;
+                if (letterIndex >= letters.length) {
+                  letterIndex = letters.length;
+                  if (announcer) announcer.textContent = phrases[phraseIndex];
+                  isDeleting = true;
+                  delay = holdDelay;
+                }
+              }
+
+              renderPhrase();
+              window.setTimeout(tick, delay);
+            };
+
+            window.setTimeout(tick, holdDelay);
+          }
+        }
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,10 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" rx="48" fill="#171614"/>
+  <circle cx="104" cy="88" r="220" fill="#AD5B33" opacity="0.34"/>
+  <circle cx="1010" cy="500" r="260" fill="#FFAE7B" opacity="0.16"/>
+  <rect x="112" y="112" width="976" height="406" rx="36" fill="#FFF6E8"/>
+  <path d="M184 205h324M184 270h412M184 335h264" stroke="#AD5B33" stroke-width="24" stroke-linecap="round"/>
+  <rect x="706" y="182" width="250" height="250" rx="28" fill="#171614"/>
+  <path d="M782 350l49-143 49 143M805 306h52" stroke="#FFAE7B" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="184" y="444" fill="#20201E" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="44" font-weight="760">Obsidian 写作 · Astro 发布</text>
+</svg>

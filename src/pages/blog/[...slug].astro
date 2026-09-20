@@ -1,0 +1,80 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDate, getPostDescription, getPostSlug, getPostTitle, getPublishedPosts, getTagPath } from '../../lib/posts';
+import { site } from '../../theme/site';
+
+export async function getStaticPaths() {
+  const posts = await getPublishedPosts();
+  return posts.map((post) => ({ params: { slug: getPostSlug(post) }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const title = getPostTitle(post);
+const description = getPostDescription(post);
+const slug = getPostSlug(post);
+const canonicalPath = `/blog/${slug}/`;
+const articleUrl = new URL(canonicalPath, site.url).toString();
+const articleImage = new URL(post.data.cover ?? site.defaultImage, site.url).toString();
+const articleSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  image: articleImage,
+  datePublished: post.data.pubDate?.toISOString(),
+  dateModified: (post.data.updatedDate ?? post.data.pubDate)?.toISOString(),
+  author: { '@id': `${site.url}/#person` },
+  publisher: { '@id': `${site.url}/#person` },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': articleUrl
+  },
+  url: articleUrl,
+  inLanguage: site.lang,
+  keywords: post.data.tags.join(', ')
+};
+const visibleHeadings = headings.filter((heading) => heading.depth === 2 || heading.depth === 3).slice(0, 8);
+---
+<BaseLayout
+  title={title}
+  description={description}
+  image={post.data.cover}
+  type="article"
+  canonicalPath={canonicalPath}
+  tags={post.data.tags}
+  pubDate={post.data.pubDate}
+  updatedDate={post.data.updatedDate}
+  schema={articleSchema}
+>
+  <article class="article-shell">
+    <header class="article-header">
+      <div class="article-header__frame">
+        <div class="article-title-block">
+          <h1>{title}</h1>
+          <div class="article-meta">
+            <time datetime={post.data.pubDate?.toISOString()}>{formatDate(post.data.pubDate)}</time>
+          </div>
+          {post.data.tags.length > 0 && (
+            <div class="tag-list article-tags" aria-label="标签">
+              {post.data.tags.map((tag) => <a class="tag tag--link" href={getTagPath(tag)}>{tag}</a>)}
+            </div>
+          )}
+        </div>
+      </div>
+    </header>
+    {post.data.cover && <img class="article-cover" src={post.data.cover} alt={`${title} 封面图`} />}
+    <div class="article-layout">
+      <div class="prose article-content"><Content /></div>
+      {visibleHeadings.length > 0 && (
+        <aside class="article-toc" aria-label="文章目录">
+          <p>目录</p>
+          <nav>
+            {visibleHeadings.map((heading) => <a class={`toc-depth-${heading.depth}`} href={`#${heading.slug}`}>{heading.text}</a>)}
+          </nav>
+        </aside>
+      )}
+    </div>
+  </article>
+</BaseLayout>

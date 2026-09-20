@@ -1,0 +1,33 @@
+<svg width="500" height="500" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Inkstone home illustration</title>
+  <desc id="desc">A calm writing desk illustration with content cards, inkstone mark, and grid lines.</desc>
+  <defs>
+    <linearGradient id="card" x1="98" y1="88" x2="410" y2="408" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFF7ED"/>
+      <stop offset=".52" stop-color="#EFF6FF"/>
+      <stop offset="1" stop-color="#F0FDF4"/>
+    </linearGradient>
+    <linearGradient id="stroke" x1="124" y1="351" x2="382" y2="184" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FB923C"/>
+      <stop offset=".55" stop-color="#60A5FA"/>
+      <stop offset="1" stop-color="#4ADE80"/>
+    </linearGradient>
+    <pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse">
+      <path d="M28 0H0V28" stroke="#D4D4D4" stroke-width="1" stroke-dasharray="3 5" fill="none"/>
+    </pattern>
+  </defs>
+  <rect x="42" y="54" width="416" height="392" rx="42" fill="url(#grid)" opacity=".7"/>
+  <rect x="82" y="72" width="336" height="356" rx="38" fill="url(#card)" stroke="#D4D4D4" stroke-dasharray="8 8"/>
+  <rect x="118" y="112" width="208" height="22" rx="11" fill="#171717"/>
+  <rect x="118" y="154" width="256" height="14" rx="7" fill="#52525B" opacity=".58"/>
+  <rect x="118" y="184" width="188" height="14" rx="7" fill="#737373" opacity=".45"/>
+  <rect x="118" y="232" width="112" height="88" rx="22" fill="#FFFFFF" stroke="#E5E7EB"/>
+  <rect x="250" y="232" width="132" height="88" rx="22" fill="#171717"/>
+  <path d="M139 276H205" stroke="#FB923C" stroke-width="8" stroke-linecap="round"/>
+  <path d="M273 276H355" stroke="#60A5FA" stroke-width="8" stroke-linecap="round"/>
+  <path d="M118 360C176 283 258 244 380 214" stroke="url(#stroke)" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="379" cy="214" r="14" fill="#60A5FA"/>
+  <path d="M155 367H318" stroke="#171717" stroke-width="16" stroke-linecap="round"/>
+  <circle cx="105" cy="105" r="15" fill="#FB923C"/>
+  <circle cx="395" cy="400" r="19" fill="#4ADE80" opacity=".8"/>
+</svg>
