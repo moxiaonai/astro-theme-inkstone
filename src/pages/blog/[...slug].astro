@@ -1,20 +1,20 @@
 ---
 import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { formatDate, getPostDescription, getPostSlug, getPostTitle, getPublishedPosts, getTagPath } from '../../lib/posts';
+import { formatDate, getCategoryPath, getPostCategory, getPostDescription, getPostPath, getPostRouteSlug, getPostTitle, getPublishedPosts, getTagPath } from '../../lib/posts';
 import { site } from '../../theme/site';
 
 export async function getStaticPaths() {
   const posts = await getPublishedPosts();
-  return posts.map((post) => ({ params: { slug: getPostSlug(post) }, props: { post } }));
+  return posts.map((post) => ({ params: { slug: getPostRouteSlug(post) }, props: { post } }));
 }
 
 const { post } = Astro.props;
 const { Content, headings } = await render(post);
 const title = getPostTitle(post);
 const description = getPostDescription(post);
-const slug = getPostSlug(post);
-const canonicalPath = `/blog/${slug}/`;
+const category = getPostCategory(post);
+const canonicalPath = getPostPath(post);
 const articleUrl = new URL(canonicalPath, site.url).toString();
 const articleImage = new URL(post.data.cover ?? site.defaultImage, site.url).toString();
 const articleSchema = {
@@ -33,7 +33,8 @@ const articleSchema = {
   },
   url: articleUrl,
   inLanguage: site.lang,
-  keywords: post.data.tags.join(', ')
+  articleSection: category,
+  keywords: [category, ...post.data.tags].join(', ')
 };
 const visibleHeadings = headings.filter((heading) => heading.depth === 2 || heading.depth === 3).slice(0, 8);
 ---
@@ -43,7 +44,7 @@ const visibleHeadings = headings.filter((heading) => heading.depth === 2 || head
   image={post.data.cover}
   type="article"
   canonicalPath={canonicalPath}
-  tags={post.data.tags}
+  tags={[category, ...post.data.tags]}
   pubDate={post.data.pubDate}
   updatedDate={post.data.updatedDate}
   schema={articleSchema}
@@ -55,6 +56,7 @@ const visibleHeadings = headings.filter((heading) => heading.depth === 2 || head
           <h1>{title}</h1>
           <div class="article-meta">
             <time datetime={post.data.pubDate?.toISOString()}>{formatDate(post.data.pubDate)}</time>
+            <a class="tag tag--link article-category" href={getCategoryPath(category)}>分类：{category}</a>
           </div>
           {post.data.tags.length > 0 && (
             <div class="tag-list article-tags" aria-label="标签">

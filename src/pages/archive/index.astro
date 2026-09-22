@@ -1,6 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { formatDate, getPostSlug, getPostTitle, getPublishedPosts, groupPostsByYear } from '../../lib/posts';
+import { formatDate, getPostPath, getPostTitle, getPublishedPosts, groupPostsByYear } from '../../lib/posts';
 const posts = await getPublishedPosts();
 const groups = groupPostsByYear(posts);
 ---
@@ -12,7 +12,7 @@ const groups = groupPostsByYear(posts);
       <p>按发布时间整理所有文章，适合长期沉淀技术笔记、复盘和数字花园内容。</p>
     </section>
     <section class="archive-list">
-      {groups.map(([year, items]) => <div class="archive-year"><h2>{year}</h2><div>{items.map((post) => <a class="archive-item" href={'/blog/' + getPostSlug(post) + '/'}><time datetime={post.data.pubDate?.toISOString()}>{formatDate(post.data.pubDate)}</time><span>{getPostTitle(post)}</span></a>)}</div></div>)}
+      {groups.map(([year, items]) => <div class="archive-year"><h2>{year}</h2><div>{items.map((post) => <a class="archive-item" href={getPostPath(post)}><time datetime={post.data.pubDate?.toISOString()}>{formatDate(post.data.pubDate)}</time><span>{getPostTitle(post)}</span></a>)}</div></div>)}
     </section>
   </div>
 </BaseLayout>

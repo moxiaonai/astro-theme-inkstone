@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getAllCategories, getCategoryPath, getPublishedPosts } from '../../lib/posts';
+
+const posts = await getPublishedPosts();
+const categories = getAllCategories(posts);
+---
+<BaseLayout title="分类" description="按 Obsidian 文件夹分类浏览博客文章。">
+  <div class="page-shell">
+    <section class="page-hero">
+      <p class="eyebrow">Categories</p>
+      <h1>分类</h1>
+      <p>Obsidian 文章所在的一级文件夹会自动映射为博客分类，根目录文章归入“未分类”。</p>
+    </section>
+    <section class="category-list page-list" aria-label="分类列表">
+      {categories.map(({ category, count }) => (
+        <a class="category-list__item" href={getCategoryPath(category)}>
+          <span class="category-list__name">{category}</span>
+          <span class="category-list__count">{count} 篇</span>
+        </a>
+      ))}
+    </section>
+  </div>
+</BaseLayout>

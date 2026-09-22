@@ -1,1 +1,14 @@
-/posts/* /blog/:splat 301!
+/about/ /about.html 301!
+/archive/ /archive.html 301!
+/blog/ /blog.html 301!
+/blog/*/ /blog/:splat.html 301!
+/categories/ /categories.html 301!
+/categories/*/ /categories/:splat.html 301!
+/projects/ /projects.html 301!
+/search/ /search.html 301!
+/sponsor/ /sponsor.html 301!
+/tags/ /tags.html 301!
+/tags/*/ /tags/:splat.html 301!
+/posts/*.html /blog/:splat.html 301!
+/posts/*/ /blog/:splat.html 301!
+/posts/* /blog/:splat.html 301!

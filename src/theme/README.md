@@ -1,53 +1,69 @@
-# Inkstone Theme Layer
+# Inkstone theme layer
 
-这是 Astro Theme Inkstone 的主题层。它负责站点配置、主题组件、全局样式 token、首页视觉、文章卡片、项目卡片和深浅色切换体验。
+src/theme contains the reusable visual and configuration layer for Astro Theme Inkstone.
 
-## 目录
+## Files
 
-```txt
+~~~txt
 src/theme/
-  site.ts                  # 站点标题、导航、首页文案、项目、友情链接
-  styles/theme.css         # 设计 tokens、深浅色、布局、卡片、文章排版
-  components/              # 导航、页脚、Logo、卡片、分割线、首页插画
-```
+  site.ts                  # site metadata, navigation, hero copy, projects, friends
+  styles/theme.css         # design tokens, light/dark themes, layouts, prose styles
+  components/              # header, footer, logo, cards, divider, hero illustration
+~~~
 
-页面入口在 `src/pages`，文章内容在 `src/content/blog`，内容与主题层保持相对清晰的边界。
+Page routes live in `src/pages`, content lives in `src/content/blog`, and shared content helpers live in `src/lib`.
 
-## 常用修改
+## Configuration
 
-| 想修改 | 文件 |
-| --- | --- |
-| 站点标题、描述、作者、域名 | `site.ts` |
-| 首页 Hero 文案和 CTA | `site.ts` |
-| 导航、社交链接、友链 | `site.ts` |
-| 项目卡片 | `site.ts` |
-| 颜色、字体、圆角、阴影、布局宽度 | `styles/theme.css` |
-| Header、Footer、Logo、文章卡片、项目卡片 | `components/*` |
+Most site-level customization starts in `src/theme/site.ts`:
 
-## 设计 tokens
+- site.title, site.description, site.url, site.author
+- site.nav and site.social
+- site.hero
+- site.topics
+- projects
+- site.friends
 
-主要 token 在 `src/theme/styles/theme.css` 的 `:root` 和 `:root.dark` 中维护：
+The default build uses Astro file-format output, so public pages are generated as .html files such as /blog.html and /blog/my-post.html.
 
-- `--bg` / `--panel` / `--panel-soft`：页面和卡片背景
-- `--text` / `--text-strong` / `--muted` / `--subtle`：正文层级
-- `--line` / `--line-soft` / `--line-strong`：边框、虚线和分割线
-- `--accent-orange` / `--accent-blue` / `--accent-green`：渐变和项目卡强调色
-- `--radius-xl` / `--radius-2xl`：圆角系统
-- `--max-w-4xl` / `--max-w-5xl`：内容宽度
+## Content conventions
 
-## 写作约定
+Published posts need title and pubDate, and must not have `draft: true`.
 
-发布文章需要 frontmatter：
-
-```md
+~~~md
 ---
-title: "文章标题"
-description: "一句话摘要"
+title: "Post title"
+urlSlug: "post-slug"
+category: "指南"
+description: "Short summary"
 pubDate: 2026-09-19
 tags: ["Astro", "Obsidian"]
 draft: false
 cover: "/images/posts/example.png"
 ---
-```
+~~~
 
-空白笔记、缺少 `title` / `pubDate` 的文件，或设置了 `draft: true` 的文件不会进入公开博客列表，方便先在 Obsidian 中慢慢写草稿。
+The first folder under `src/content/blog` becomes the category. A post at `src/content/blog/指南/example.md` belongs to the 指南 category. Posts directly under src/content/blog are assigned to 未分类.
+
+Use `urlSlug` when the Markdown file name or folder name contains Chinese or other non-ASCII characters. Category and tag URLs use `taxonomySlugMap` in `src/lib/posts.ts`; add mappings there for non-ASCII category or tag names.
+
+## Design tokens
+
+Main tokens are defined in `src/theme/styles/theme.css` under `:root` and `:root.dark`:
+
+- --bg, --panel, --panel-soft
+- --text, --text-strong, --muted, --subtle
+- --line, --line-soft, --line-strong
+- --accent-orange, --accent-blue, --accent-green
+- --radius-xl, --radius-2xl
+- --max-w-4xl, --max-w-5xl
+
+## Built-in pages
+
+- Home, blog, post detail, categories, tags, archive, projects, search, about, sponsor
+- RSS, sitemap, robots, `llms.txt`, and `content-index.json`
+- Legacy `/posts/*` compatibility routes redirect to canonical `/blog/*.html` URLs on hosts that support `_redirects`
+
+## 路由与分类
+
+文章默认输出为 `/blog/{slug}.html`。`urlSlug` 可以显式控制英文永久链接；`category` 可以显式设置分类，未设置时会读取文章所在的一级文件夹，根目录文章归入“未分类”。如果新增中文分类或中文标签，请在 `src/lib/posts.ts` 的 `taxonomySlugMap` 中补充英文 slug。
