@@ -1,8 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../theme/components/PostCard.astro';
-import { getAllTags, getPublishedPosts } from '../../lib/posts';
-export async function getStaticPaths() { const posts = await getPublishedPosts(); return getAllTags(posts).map(({ tag }) => ({ params: { tag: encodeURIComponent(tag) }, props: { tag } })); }
+import { getAllTags, getPublishedPosts, getTagSlug } from '../../lib/posts';
+export async function getStaticPaths() { const posts = await getPublishedPosts(); return getAllTags(posts).map(({ tag }) => ({ params: { tag: getTagSlug(tag) }, props: { tag } })); }
 const posts = await getPublishedPosts();
 const { tag } = Astro.props;
 const filtered = posts.filter((post) => post.data.tags.includes(tag));

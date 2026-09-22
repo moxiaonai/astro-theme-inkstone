@@ -50,7 +50,7 @@ const structuredData = JSON.stringify([
     publisher: { '@id': `${site.url}/#person` },
     potentialAction: {
       '@type': 'SearchAction',
-      target: `${site.url}/search/?q={search_term_string}`,
+      target: `${site.url}/search.html?q={search_term_string}`,
       'query-input': 'required name=search_term_string'
     }
   },

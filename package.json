@@ -4,14 +4,14 @@
   "description": "An elegant Astro theme for Obsidian-first writing, Chinese-friendly blogs, local search, RSS, SEO, and static publishing.",
   "type": "module",
   "license": "MIT",
-  "author": "Your Name",
-  "homepage": "https://github.com/your-name/astro-theme-inkstone#readme",
+  "author": "moxiaonai",
+  "homepage": "https://github.com/moxiaonai/astro-theme-inkstone#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/your-name/astro-theme-inkstone.git"
+    "url": "git+https://github.com/moxiaonai/astro-theme-inkstone.git"
   },
   "bugs": {
-    "url": "https://github.com/your-name/astro-theme-inkstone/issues"
+    "url": "https://github.com/moxiaonai/astro-theme-inkstone/issues"
   },
   "packageManager": "pnpm@10.14.0",
   "scripts": {

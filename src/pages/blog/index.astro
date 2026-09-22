@@ -1,14 +1,28 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PostCard from '../../theme/components/PostCard.astro';
-import { getPublishedPosts } from '../../lib/posts';
+import { getAllCategories, getCategoryPath, getPublishedPosts } from '../../lib/posts';
 const posts = await getPublishedPosts();
+const categories = getAllCategories(posts);
 ---
 <BaseLayout title="博客" description="技术文章列表，记录 Astro、Obsidian、前端工程、AI 工具和静态站点实践。">
   <div class="page-shell blog-index-shell">
     <section class="page-hero blog-index-hero">
       <h1>博客</h1>
     </section>
+    {categories.length > 0 && (
+      <section class="blog-category-nav page-list" aria-label="文章分类">
+        <span class="blog-category-nav__label">分类</span>
+        <div class="blog-category-nav__links">
+          {categories.map(({ category, count }) => (
+            <a class="blog-category-nav__link" href={getCategoryPath(category)}>
+              <span class="blog-category-nav__name">{category}</span>
+              <span class="blog-category-nav__count">{count}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
     <section class="post-list page-list blog-index-list" aria-label="文章列表">
       {posts.map((post) => <PostCard post={post} variant="index" />)}
     </section>

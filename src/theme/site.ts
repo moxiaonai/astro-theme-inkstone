@@ -5,8 +5,8 @@ export const site = {
   description: 'Inkstone 是一款面向 Obsidian 本地写作、Astro 静态发布和中文技术博客的优雅主题。',
   url: 'https://astro-theme-inkstone.example.com',
   lang: 'zh-CN',
-  author: 'Your Name',
-  authorUrl: '/about/',
+  author: 'moxiaonai',
+  authorUrl: '/about.html',
   defaultImage: '/images/site/social-card.svg',
   keywords: [
     'Inkstone',
@@ -31,7 +31,7 @@ export const site = {
     },
     {
       name: '长期写作与内容发现',
-      description: '通过标签、归档、RSS、sitemap、llms.txt 和结构化索引沉淀内容。'
+      description: '通过分类、标签、归档、RSS、sitemap、llms.txt 和结构化索引沉淀内容。'
     }
   ],
   hero: {
@@ -43,18 +43,19 @@ export const site = {
     ],
     cta: {
       label: '了解 Inkstone',
-      href: '/about/'
+      href: '/about.html'
     }
   },
   nav: [
-    { label: '博客', href: '/blog/' },
-    { label: '项目', href: '/projects/' },
-    { label: '搜索', href: '/search/' },
-    { label: '关于', href: '/about/' },
-    { label: '赞助', href: '/sponsor/' }
+    { label: '博客', href: '/blog.html' },
+    { label: '分类', href: '/categories.html' },
+    { label: '项目', href: '/projects.html' },
+    { label: '搜索', href: '/search.html' },
+    { label: '关于', href: '/about.html' },
+    { label: '赞助', href: '/sponsor.html' }
   ],
   social: [
-    { label: 'GitHub', href: 'https://github.com/your-name/astro-theme-inkstone' },
+    { label: 'GitHub', href: 'https://github.com/moxiaonai/astro-theme-inkstone' },
     { label: 'RSS', href: '/rss.xml' }
   ],
   friends: [
@@ -69,7 +70,7 @@ export const projects = [
     id: 'digital-garden',
     title: 'Digital Garden',
     description: '把笔记、文章和项目记录整理成一个可长期生长的个人知识花园。',
-    url: '/projects/',
+    url: '/projects.html',
     repo: 'garden',
     cover: '/images/projects/digital-garden.svg',
     stars: 'Notes',
@@ -79,7 +80,7 @@ export const projects = [
     id: 'obsidian-astro',
     title: 'Obsidian Astro',
     description: '从本地 Markdown 到静态站点的写作发布工作流示例。',
-    url: '/projects/',
+    url: '/projects.html',
     repo: 'writing',
     cover: '/images/projects/obsidian-astro.svg',
     stars: 'Astro',
@@ -89,7 +90,7 @@ export const projects = [
     id: 'theme-lab',
     title: 'Theme Lab',
     description: '展示 Inkstone 的颜色 token、卡片、排版和深浅色切换细节。',
-    url: '/projects/',
+    url: '/projects.html',
     repo: 'theme',
     cover: '/images/projects/theme-lab.svg',
     stars: 'Design',
@@ -99,7 +100,7 @@ export const projects = [
     id: 'rss-lab',
     title: 'RSS Lab',
     description: 'RSS、sitemap、llms.txt 和结构化索引的内容发现实验。',
-    url: '/projects/',
+    url: '/projects.html',
     repo: 'feeds',
     cover: '/images/projects/rss-lab.svg',
     stars: 'SEO',
@@ -109,7 +110,7 @@ export const projects = [
     id: 'notes-kit',
     title: 'Notes Kit',
     description: '一套适合技术文章、踩坑记录和项目复盘的 Markdown 写作模板。',
-    url: '/projects/',
+    url: '/projects.html',
     repo: 'notes',
     cover: '/images/projects/notes-kit.svg',
     stars: 'MD',
@@ -119,7 +120,7 @@ export const projects = [
     id: 'local-workbench',
     title: 'Local Workbench',
     description: '围绕本地预览、内容校验和静态部署的轻量工作台。',
-    url: '/projects/',
+    url: '/projects.html',
     repo: 'local',
     cover: '/images/projects/local-workbench.svg',
     stars: 'Static',

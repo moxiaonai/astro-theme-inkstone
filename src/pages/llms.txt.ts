@@ -1,4 +1,4 @@
-import { getAllTags, getPostDescription, getPostSlug, getPostTitle, getPublishedPosts } from '../lib/posts';
+import { getAllCategories, getAllTags, getCategoryPath, getPostCategory, getPostDescription, getPostPath, getPostTitle, getPublishedPosts, getTagPath } from '../lib/posts';
 import { normalizeText, staticPages, toAbsoluteUrl } from '../lib/seo';
 import { projects, site } from '../theme/site';
 
@@ -7,6 +7,7 @@ const formatDate = (date?: Date) => date ? date.toISOString().slice(0, 10) : '';
 export async function GET() {
   const posts = await getPublishedPosts();
   const tags = getAllTags(posts);
+  const categories = getAllCategories(posts);
   const latestUpdatedAt = posts
     .map((post) => post.data.updatedDate ?? post.data.pubDate)
     .filter(Boolean)
@@ -38,13 +39,18 @@ export async function GET() {
     '## Latest articles',
     '',
     ...posts.map((post) => {
+      const categoryText = ` Category: ${getPostCategory(post)}.`;
       const tagsText = post.data.tags.length > 0 ? ` Tags: ${post.data.tags.join(', ')}.` : '';
-      return `- [${getPostTitle(post)}](${toAbsoluteUrl(`/blog/${getPostSlug(post)}/`)}): ${normalizeText(getPostDescription(post))} Published: ${formatDate(post.data.pubDate)}.${tagsText}`;
+      return `- [${getPostTitle(post)}](${toAbsoluteUrl(getPostPath(post))}): ${normalizeText(getPostDescription(post))} Published: ${formatDate(post.data.pubDate)}.${categoryText}${tagsText}`;
     }),
+    '',
+    '## Categories',
+    '',
+    ...categories.map(({ category, count }) => `- [${category}](${toAbsoluteUrl(getCategoryPath(category))}): ${count} article${count > 1 ? 's' : ''}`),
     '',
     '## Tags',
     '',
-    ...tags.map(({ tag, count }) => `- [${tag}](${toAbsoluteUrl(`/tags/${encodeURIComponent(tag)}/`)}): ${count} article${count > 1 ? 's' : ''}`),
+    ...tags.map(({ tag, count }) => `- [${tag}](${toAbsoluteUrl(getTagPath(tag))}): ${count} article${count > 1 ? 's' : ''}`),
     '',
     '## Projects',
     '',
@@ -52,8 +58,8 @@ export async function GET() {
     '',
     '## Usage notes',
     '',
-    '- Canonical article URLs use /blog/{slug}/.',
-    '- Default demo content is written in Simplified Chinese. You can change site.lang and replace the content with your own language.',
+    '- Canonical article URLs use /blog/{slug}.html.',
+    '- Content is primarily written in Simplified Chinese.',
     '- Cite the canonical article URL when quoting or summarizing an article from this site.'
   ].join('\n');
 

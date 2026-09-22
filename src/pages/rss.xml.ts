@@ -1,4 +1,4 @@
-import { getPublishedPosts, getPostDescription, getPostSlug, getPostTitle } from '../lib/posts';
+import { getPostCategory, getPublishedPosts, getPostDescription, getPostPath, getPostTitle } from '../lib/posts';
 import { escapeXml, toAbsoluteUrl } from '../lib/seo';
 import { site } from '../theme/site';
 
@@ -11,8 +11,11 @@ export async function GET() {
     .sort((a, b) => (b?.valueOf() ?? 0) - (a?.valueOf() ?? 0))[0];
   const items = posts
     .map((post) => {
-      const href = toAbsoluteUrl(`/blog/${getPostSlug(post)}/`);
-      const categories = post.data.tags.map((tag) => `<category>${escapeXml(tag)}</category>`).join('');
+      const href = toAbsoluteUrl(getPostPath(post));
+      const categories = [getPostCategory(post), ...post.data.tags]
+        .filter((category, index, list) => list.indexOf(category) === index)
+        .map((category) => `<category>${escapeXml(category)}</category>`)
+        .join('');
 
       return [
         '<item>',
