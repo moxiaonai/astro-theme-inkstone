@@ -1,354 +1,236 @@
 # Astro Theme Inkstone
 
-> 一款面向 **Obsidian 本地写作 + Astro 静态发布** 的优雅个人博客主题。  
-> 像砚台一样安静、耐看，适合长期写作与持续沉淀。
+**用 Obsidian 写作，用 Astro 发布。**
+
+Inkstone 是一款面向中文技术博客和个人项目记录的 Astro 静态博客主题。把项目目录作为 Obsidian vault 打开，在本地写 Markdown、整理文章和图片，再构建成静态站点发布。
+
+Inkstone 意为「砚台」：一个安静、耐看、可以长期使用的写作器物。主题采用留白、网格背景和卡片布局，提供适合中文阅读的正文排版，以及从按钮位置展开的深浅色切换动画。
 
 ![Astro](https://img.shields.io/badge/Astro-5.x-ff5d01?logo=astro&logoColor=white)
-![Markdown](https://img.shields.io/badge/Markdown%20%2F%20MDX-ready-111827?logo=markdown&logoColor=white)
+![Markdown](https://img.shields.io/badge/Markdown-ready-111827?logo=markdown&logoColor=white)
 ![Obsidian](https://img.shields.io/badge/Obsidian-friendly-7c3aed?logo=obsidian&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-10b981)
 
-Astro Theme Inkstone 是一个为中文技术博客、个人知识库和长期写作设计的 Astro 主题。你可以直接把仓库作为 Obsidian vault 使用，在本地用 Markdown / MDX 写文章，再通过 Astro 构建成可部署到 Cloudflare Pages、Vercel、Netlify、GitHub Pages 等平台的纯静态站点。
+![Inkstone 首页的浅色与深色主题预览](public/images/site/light-dark-preview.png)
 
-它的视觉风格偏现代极简：克制的留白、细腻的网格背景、卡片式文章列表、中文友好的阅读宽度、Light / Dark 双主题，以及从切换按钮处像墨水一样展开的主题切换动画。
+## 你可以用它做什么
 
-## 为什么叫 Inkstone？
-
-Inkstone 是“砚台”。这个名字想表达的是：一个博客主题不需要一直追逐短期热闹，它更应该像一个稳定、耐看的写作器物，陪你长期记录、打磨、发布。
-
-- **Ink**：写作、表达、知识流动。
-- **Stone**：稳定、克制、可以长期维护。
-- **Obsidian-friendly**：适合把本地 Markdown 知识库发布成静态博客。
-
-如果你想要一个既能写技术文章，也能沉淀个人项目、笔记和长期思考的博客主题，Inkstone 会很适合。
-
-## 特性
-
-- **Obsidian 写作友好**：项目根目录可以直接作为 Obsidian vault 打开，文章放在 `src/content/blog`，图片放在 `public/images/posts`，使用标准 Markdown 图片路径即可发布。
-- **文件夹分类**：`src/content/blog` 下的一级文件夹会自动变成分类，根目录文章归入“未分类”，分类会进入博客列表、文章页、搜索、RSS、sitemap、`llms.txt` 和 `content-index.json`。
-- **稳定英文 URL**：文章使用可选 `urlSlug` 生成 `/blog/:slug.html`，适合中文文件名、Obsidian 文件夹整理和长期分享。
-- **Astro 5 + Content Collections**：基于 Astro 内容集合管理 Markdown / MDX，支持标题、摘要、发布日期、更新日期、标签、封面图、草稿状态等 frontmatter。
-- **完整博客页面**：内置首页、博客列表、文章详情、分类页、标签页、归档页、项目页、搜索页、关于页、赞助页、RSS、sitemap、robots、`llms.txt` 和结构化内容索引。
-- **本地搜索**：构建时生成文章索引，前端直接搜索标题、摘要、日期、分类和标签，不依赖 Algolia、数据库或第三方服务。
-- **SEO 友好**：内置 canonical URL、Open Graph、Twitter Card、文章 JSON-LD、RSS、sitemap 和 robots.txt。
-- **LLM / AI 友好**：提供 `/llms.txt` 和 `/content-index.json`，方便 AI 工具、搜索引擎和内容聚合工具理解站点结构。
-- **Light / Dark 双主题**：支持系统偏好、用户本地选择和 `localStorage` 持久化。
-- **墨水扩散式主题切换动画**：使用自绘 DOM 遮罩实现从按钮位置展开 / 收起的圆形过渡，并兼容 `prefers-reduced-motion`。
-- **中文阅读体验优化**：适合中文博客的正文宽度、行距、标题层级、自动目录、代码块、引用、卡片和响应式布局。
-- **纯静态部署**：构建产物是 `dist`，无需后端服务。
-
-## 预览
-
-![Inkstone light and dark diagonal preview](public/images/site/light-dark-preview.png)
-
-上图把首页的 Light / Dark 两种状态按对角线拼接在一起，方便快速感受主题的整体气质。你也可以先在本地启动预览；正式发布后，建议把 Demo 地址替换成你的线上站点。
-
-~~~txt
-Demo: https://your-domain.com
-Repository: https://github.com/moxiaonai/astro-theme-inkstone
-~~~
+- **在本地写作**：文章、草稿和图片保存在项目中，附带 Obsidian 配置和文章模板，也可以使用其他 Markdown 编辑器。
+- **整理和查找文章**：支持文件夹分类、标签、年份归档和本地搜索。搜索覆盖标题、摘要、日期、分类和标签，无需接入外部搜索服务。
+- **搭建个人站点**：内置首页、文章页、项目页、关于页和赞助页，站点信息、导航、项目和友链集中配置。
+- **保持阅读体验**：提供响应式布局、自动目录、代码高亮、封面图和深浅色主题。主题选择会保存在本地，切换动画兼容减少动态效果的系统偏好。
+- **分享和发布内容**：生成 RSS、sitemap、robots.txt、canonical、社交分享元信息和文章 JSON-LD；另提供 `llms.txt` 与 `content-index.json` 供工具读取。
+- **部署静态站点**：构建结果输出到 `dist/`，无需运行后端服务。
 
 ## 快速开始
 
-推荐使用 Node.js 20+ 和 pnpm 10+。
+使用 pnpm 10，版本约定见 [package.json](package.json)。准备好可运行项目所用 Astro 5 的 Node.js 环境后，克隆仓库并启动：
 
-~~~bash
+```bash
+git clone https://github.com/moxiaonai/astro-theme-inkstone.git
+cd astro-theme-inkstone
 pnpm install
 pnpm dev
-~~~
+```
 
-启动后访问：
+打开 <http://127.0.0.1:4321/> 查看站点。
 
-~~~txt
-http://127.0.0.1:4321/
-~~~
+| 命令 | 用途 |
+| --- | --- |
+| `pnpm dev` | 启动开发服务，默认端口 `4321` |
+| `pnpm build` | 构建静态站点，输出到 `dist/` |
+| `pnpm preview` | 预览构建结果，默认端口 `4322`；需先执行构建 |
+| `pnpm obsidian` | 在 macOS 上用已安装的 Obsidian 打开项目目录 |
 
-常用命令：
+### 先改成自己的站点
 
-~~~bash
-pnpm dev       # 本地开发，默认 127.0.0.1:4321
-pnpm build     # 构建静态站点到 dist
-pnpm preview   # 本地预览构建结果，默认 127.0.0.1:4322
-pnpm obsidian  # macOS 下用 Obsidian 打开当前目录
-~~~
+1. 修改 [src/theme/site.ts](src/theme/site.ts) 中的站点信息、作者、导航、社交链接、项目和友链。
+2. 将该文件中的 `site.url` 和 [astro.config.mjs](astro.config.mjs) 中的 `site` 改为同一个真实站点地址。
+3. 替换 `public/favicon.svg`、`public/images/theme/` 中的 Logo、头像和首页插画，以及 `public/images/site/social-card.svg` 分享图。
+4. 修改 [关于页](src/pages/about.md)，删除或改写 `src/content/blog/` 中的示例文章。不需要赞助页时，可从导航中移除对应入口。
+5. 运行 `pnpm build`，确认文章、分类和链接配置可以完成构建。
 
-## 用 Obsidian 写文章
+## 写第一篇文章
 
-你可以直接把项目根目录作为 Obsidian vault 打开。仓库里带了一份最小 Obsidian 配置：
-
-~~~txt
-.obsidian/app.json
-.obsidian/core-plugins.json
-.obsidian/templates.json
-~~~
-
-默认约定：
+将项目根目录作为 Obsidian vault 打开，或直接在 `src/content/blog/` 下新建 Markdown 文件。仓库中的 `.obsidian/` 配置将新笔记目录、附件目录和模板目录分别设为：
 
 | 内容 | 位置 |
 | --- | --- |
-| 文章 | `src/content/blog` |
-| 文章模板 | `src/content/blog/_templates` |
-| 文章图片 | `public/images/posts` |
-| 项目图片 | `public/images/projects` |
-| 站点图片 | `public/images/site` |
-| 主题图片 | `public/images/theme` |
+| 文章与草稿 | `src/content/blog/` |
+| 文章模板 | `src/content/blog/_templates/` |
+| 图片附件 | `public/images/posts/` |
 
-分类规则很简单：`src/content/blog` 下的一级文件夹就是分类。例如：
+例如，创建 `src/content/blog/指南/第一篇文章.md`：
 
-~~~txt
-src/content/blog/
-├── 指南/
-│   └── hello-astro-obsidian.md
-└── 设计/
-    └── theme-reveal-dark-light.md
-~~~
-
-上面的两篇文章会分别进入“指南”和“设计”分类。如果文章直接放在 `src/content/blog` 根目录，会归入“未分类”。
-
-在文章中引用图片时，建议使用从 `public` 根目录开始的路径：
-
-~~~md
-![图片说明](/images/posts/example.png)
-~~~
-
-这样 Obsidian 中容易维护，Astro 构建后也能正常访问。
-
-## 文章 frontmatter
-
-新建文章时建议使用下面的格式：
-
-~~~md
+```md
 ---
-title: "文章标题"
-urlSlug: "article-slug"
-category: "指南"
-description: "一句话摘要"
-pubDate: 2026-09-19
-updatedDate: 2026-09-20
-tags: ["Astro", "Obsidian", "Markdown"]
+title: "用 Obsidian 写第一篇博客"
+urlSlug: "first-post"
+description: "从本地 Markdown 到静态博客的写作流程。"
+pubDate: 2026-11-12
+tags: ["Obsidian", "Markdown"]
 draft: false
-cover: "/images/posts/example.png"
-featured: false
 ---
 
 这里开始写正文。
-~~~
+```
 
-字段说明：
+这篇文章会归入「指南」分类，发布地址为 `/blog/first-post.html`。写作期间可以设置 `draft: true`，准备发布后再改为 `false`。
 
-| 字段 | 类型 | 必填 | 说明 |
-| --- | --- | --- | --- |
-| `title` | `string` | 发布时必填 | 文章标题 |
-| `urlSlug` | `string` | 中文文件名建议填写 | 文章 URL slug，默认会从文件路径生成；填写后生成 `/blog/article-slug.html` |
-| `category` | `string` | 否 | 文章分类；未填写时会使用文章所在的一级文件夹，根目录文章归入“未分类” |
-| `description` | `string` | 否 | 摘要，会显示在列表、搜索结果和 SEO 描述中 |
-| `pubDate` | `date` | 发布时必填 | 发布日期 |
-| `updatedDate` | `date` | 否 | 更新日期 |
-| `tags` | `string[]` | 否 | 标签，默认空数组 |
-| `draft` | `boolean` | 否 | 为 true 时不会出现在公开文章列表 |
-| `cover` | `string` | 否 | 文章封面图路径 |
-| `featured` | `boolean` | 否 | 预留字段，可用于扩展精选文章 |
+### Frontmatter 字段
 
-为了方便在 Obsidian 中先写草稿，缺少 `title`、缺少 `pubDate` 或设置了 `draft: true` 的文章不会进入公开博客列表。`src/content/blog/_templates` 也会被内容集合排除，可以放心存放模板。
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `title` | `string` | 发布必填：文章标题 |
+| `pubDate` | `date` | 发布必填：发布日期，如 `2026-11-12` |
+| `urlSlug` | `string` | 文章固定链接；建议明确填写，含中文的文件路径通常需要此字段 |
+| `description` | `string` | 可选：用于文章列表、搜索结果和 SEO 的摘要 |
+| `updatedDate` | `date` | 可选：更新日期 |
+| `category` | `string` | 可选：覆盖根据文件夹推导的分类 |
+| `tags` | `string[]` | 可选：标签，默认 `[]` |
+| `draft` | `boolean` | 可选：设为 `true` 时不公开，默认 `false` |
+| `cover` | `string` | 可选：封面路径，如 `/images/posts/example.png` |
+| `featured` | `boolean` | 预留字段，默认 `false`，可用于扩展精选文章 |
 
-## 分类、标签与 URL
+公开文章需要同时满足：有 `title`、有 `pubDate`，且 `draft` 不是 `true`。缺少这些发布条件的笔记不会进入公开内容；`_templates/` 目录也会被内容集合排除。
 
-Inkstone 默认使用 `.html` 固定链接：
+当前配置以标准 Markdown 为主。内容加载器包含 `.mdx` 文件匹配规则，但项目尚未配置 MDX integration；使用 MDX 前需要自行补充集成。
 
-| 内容 | 默认 URL |
-| --- | --- |
-| 博客列表 | `/blog.html` |
-| 文章 | `/blog/:slug.html` |
-| 分类列表 | `/categories.html` |
-| 分类详情 | `/categories/:category.html` |
-| 标签列表 | `/tags.html` |
-| 标签详情 | `/tags/:tag.html` |
+### 图片怎么放
 
-`urlSlug` 必须是英文、数字、连字符或斜杠组成的稳定 slug。如果不填写，主题会从文件路径生成 slug。中文文件名建议填写 `urlSlug`，避免生成不适合分享的 URL。
+把图片放到 `public/images/posts/`，网页中的引用路径省略 `public`：
 
-分类和标签 URL 由 `src/lib/posts.ts` 里的 `taxonomySlugMap` 控制。默认已经提供了一些常见中文分类和标签映射，例如“指南”、“设计”、“博客主题”、“开源”。如果你新增了非英文分类或标签，请在 `taxonomySlugMap` 中补一条映射：
+```md
+![图片说明](/images/posts/example.png)
+```
 
-~~~ts
+这是网站发布时的路径。Obsidian 自动插入的附件链接可能使用文件相对路径，发布前需要检查并调整；不能假定同一个路径在两端都能直接预览。
+
+## 分类、标签与固定链接
+
+### 用文件夹整理分类
+
+默认取文章所在的一级文件夹作为分类：
+
+```text
+src/content/blog/
+├── 指南/
+│   └── 第一篇文章.md       # 分类：指南
+├── 设计/
+│   └── 深浅色主题.md       # 分类：设计
+└── 项目记录.md             # 分类：未分类
+```
+
+文章中的 `category` 字段优先于文件夹名称。分类列表也会收录一级分类文件夹，因此空文件夹可能显示为文章数为零的分类。
+
+### 为中文内容设置英文 URL
+
+文章链接采用 `/blog/:slug.html`。明确填写 `urlSlug`，可以让文章链接在调整中文标题或移动文件后保持稳定：
+
+```yaml
+urlSlug: "obsidian-writing"
+```
+
+未填写时，slug 从文件路径生成。文章 slug 会转为小写，必须以英文或数字开头，其余字符只允许英文、数字、连字符和斜杠；不符合规则会导致构建报错。避免为不同文章设置相同的 slug。
+
+分类和标签共用 [src/lib/posts.ts](src/lib/posts.ts) 中的 `taxonomySlugMap`。已有「指南」「设计」「写作」「前端」等映射；新增非 ASCII 名称时，需要在现有映射中补充英文 slug，例如：
+
+```ts
 const taxonomySlugMap: Record<string, string> = {
-  写作: 'writing',
-  读书: 'reading'
+  // 保留已有映射，在这里追加：
+  读书: 'reading',
+  工具: 'tools'
 };
-~~~
+```
 
-这会让 `/categories/写作` 生成 `/categories/writing.html`，让 `/tags/读书` 生成 `/tags/reading.html`。
+「读书」作为分类时对应 `/categories/reading.html`，作为标签时对应 `/tags/reading.html`。缺少非 ASCII 名称的映射会导致构建报错。
 
-## 个性化配置
+## 定制主题
 
-主题配置集中在 `src/theme/site.ts`。你通常只需要改这个文件，就能完成大部分站点定制。
+大部分内容配置集中在 [src/theme/site.ts](src/theme/site.ts)，视觉样式集中在 [src/theme/styles/theme.css](src/theme/styles/theme.css)。
 
-| 想修改 | 文件 |
+| 想修改的内容 | 文件或目录 |
 | --- | --- |
-| 站点标题、副标题、描述、域名 | `src/theme/site.ts` |
-| 作者名、作者页地址 | `src/theme/site.ts` |
-| 首页 Hero 文案 | `src/theme/site.ts` |
-| 导航菜单 | `src/theme/site.ts` |
-| 社交链接 | `src/theme/site.ts` |
-| 首页主题方向说明 | `src/theme/site.ts` |
-| 项目卡片 | `src/theme/site.ts` |
-| 友情链接 | `src/theme/site.ts` |
-| 颜色、字体、间距、圆角 | `src/theme/styles/theme.css` |
-| Header、Footer、Logo、卡片组件 | `src/theme/components/*` |
-| 文章工具函数、分类映射、URL 规则 | `src/lib/posts.ts` |
-| 页面 meta、主题初始化、Light / Dark 动画脚本 | `src/layouts/BaseLayout.astro` |
+| 站点信息、作者、首页文案、导航、社交链接 | `src/theme/site.ts` |
+| 项目卡片、友情链接 | `src/theme/site.ts` |
+| 颜色、字体、间距、圆角、文章排版 | `src/theme/styles/theme.css` |
+| Header、Footer、Logo、卡片等组件 | `src/theme/components/` |
+| 分类映射、文章 URL 和内容处理 | `src/lib/posts.ts` |
+| 页面元信息、主题初始化、切换动画 | `src/layouts/BaseLayout.astro` |
+| 关于页正文 | `src/pages/about.md` |
 
-部署到线上前，记得把 `site.url` 和 `astro.config.mjs` 里的 `site` 改成你的真实域名。它会影响 canonical URL、RSS、sitemap、Open Graph 图片和 `llms.txt` 中的链接。
-
-## 页面路由
-
-| 路由 | 说明 |
-| --- | --- |
-| `/` | 首页 |
-| `/blog.html` | 全部文章 |
-| `/blog/:slug.html` | 文章详情 |
-| `/posts/:slug.html` | 文章详情兼容路由 |
-| `/categories.html` | 分类列表 |
-| `/categories/:category.html` | 分类文章列表 |
-| `/tags.html` | 标签列表 |
-| `/tags/:tag.html` | 标签文章列表 |
-| `/archive.html` | 年份归档 |
-| `/projects.html` | 项目页 |
-| `/search.html` | 本地搜索 |
-| `/about.html` | 关于页 |
-| `/sponsor.html` | 赞助页 |
-| `/rss.xml` | RSS Feed |
-| `/sitemap.xml` | Sitemap |
-| `/robots.txt` | Robots |
-| `/llms.txt` | 面向 AI / LLM 的站点说明 |
-| `/content-index.json` | 结构化内容索引 |
-
-`public/_redirects` 已经包含常见的斜杠 URL 到 `.html` URL 的跳转规则，也包含 `/posts/*` 到 `/blog/*` 的兼容跳转。Cloudflare Pages 和 Netlify 会读取这个文件；如果你的部署平台不支持 `_redirects`，可以在平台侧配置等价规则。
-
-## 项目结构
-
-~~~txt
-.
-├── .obsidian/
-│   ├── app.json
-│   ├── core-plugins.json
-│   └── templates.json
-├── public/
-│   ├── _redirects
-│   ├── favicon.svg
-│   └── images/
-│       ├── posts/       # 文章封面与正文图片
-│       ├── projects/    # 项目卡片图片
-│       ├── site/        # 社交分享图、README 预览图、关于页图片等
-│       └── theme/       # Logo、头像、首页插画
-├── src/
-│   ├── content/
-│   │   └── blog/        # Markdown / MDX 文章
-│   ├── layouts/         # 页面布局
-│   ├── lib/             # 文章、SEO、索引等工具函数
-│   ├── pages/           # Astro 页面路由
-│   └── theme/
-│       ├── components/  # 主题组件
-│       ├── styles/      # 全局主题样式
-│       ├── site.ts      # 站点配置
-│       └── README.md    # 主题层说明
-├── astro.config.mjs
-├── package.json
-└── README.md
-~~~
-
-## SEO 与内容发现
-
-Inkstone 默认生成这些面向搜索引擎、社交平台和 AI 工具的内容：
-
-- canonical URL
-- Open Graph meta
-- Twitter Card
-- 文章 JSON-LD
-- rss.xml
-- sitemap.xml
-- robots.txt
-- `llms.txt`
-- content-index.json
-
-其中 `/llms.txt` 会输出站点简介、核心页面、文章、分类、标签和项目列表；`/content-index.json` 会输出结构化索引，便于 AI 工具读取和引用。
+主题层的进一步说明见 [src/theme/README.md](src/theme/README.md)。
 
 ## 部署
 
-构建命令：
+部署前，将 `src/theme/site.ts` 的 `site.url` 与 `astro.config.mjs` 的 `site` 配置为真实站点地址。这些配置用于生成 canonical、RSS、sitemap、社交分享图片和内容索引中的绝对链接。
 
-~~~bash
+```bash
 pnpm build
-~~~
+pnpm preview
+```
 
-构建产物：
+检查构建结果后，将 `dist/` 发布到静态托管平台。使用支持 Astro 的构建平台时，可按以下配置填写：
 
-~~~txt
-dist
-~~~
-
-常见部署平台配置：
-
-| 平台配置 | 值 |
+| 配置项 | 值 |
 | --- | --- |
-| Framework preset | Astro |
-| Build command | pnpm build |
-| Output directory | dist |
+| Framework preset | `Astro` |
+| Build command | `pnpm build` |
+| Output directory | `dist` |
+| Root directory | 项目所在目录；位于 monorepo 子目录时需单独指定 |
 
-如果你把主题放在 monorepo 的子目录中，记得在部署平台设置对应的 Root directory。
+主题使用 `.html` 路由。仓库中的 [public/_redirects](public/_redirects) 提供旧斜杠路径和 `/posts/*` 到 `/blog/*` 的跳转规则；部署平台需要支持该文件或配置等价跳转。兼容文章页也会生成在 `/posts/:slug.html`。
 
-## 从这个主题开始写自己的博客
+## 页面与内容接口
 
-你可以按这个顺序初始化：
+| 地址 | 内容 |
+| --- | --- |
+| `/` | 首页 |
+| `/blog.html`、`/blog/:slug.html` | 文章列表与详情 |
+| `/categories.html`、`/categories/:category.html` | 分类列表与详情 |
+| `/tags.html`、`/tags/:tag.html` | 标签列表与详情 |
+| `/archive.html` | 年份归档 |
+| `/projects.html` | 项目展示 |
+| `/search.html` | 本地搜索 |
+| `/about.html`、`/sponsor.html` | 关于与赞助 |
+| `/rss.xml` | RSS 订阅 |
+| `/sitemap.xml`、`/robots.txt` | 站点地图与爬虫规则 |
+| `/llms.txt` | 站点简介及页面、文章、分类、标签和项目链接 |
+| `/content-index.json` | 结构化内容索引 |
 
-1. 修改 src/theme/site.ts 中的站点信息、作者、域名、导航和社交链接。
-2. 修改 astro.config.mjs 中的 site。
-3. 替换 public/favicon.svg。
-4. 替换 public/images/site/social-card.svg。
-5. 替换 public/images/theme/site-logo.svg、头像和首页插画。
-6. 删除或改写 src/content/blog 中的示例文章。
-7. 如果使用中文分类或中文标签，在 src/lib/posts.ts 的 taxonomySlugMap 中补充英文 URL 映射。
-8. 修改 src/pages/about.md。
-9. 如果不需要赞助页，可以从导航里移除 /sponsor.html。
-10. 运行 pnpm build 检查构建是否通过。
-11. 部署到你喜欢的静态托管平台。
+`llms.txt` 和内容索引提供可读取的站点信息，是否使用这些信息由访问工具决定。
 
-## 设计理念
+## 项目结构
 
-Inkstone 的目标不是做一个塞满功能的博客系统，而是提供一个清晰、稳定、可长期维护的写作起点。
-
-它更关注这些事情：
-
-- 写文章时尽量简单。
-- 改站点信息时有明确入口。
-- 页面结构清晰，不把内容藏在复杂配置里。
-- 静态站点优先，降低部署和维护成本。
-- 中文阅读体验优先。
-- 默认对搜索引擎和 AI 工具友好。
-- 视觉上安静，但有一点记忆点。
-
-## 开源前建议
-
-如果你准备把自己的版本继续开源，建议检查：
-
-- package.json 中的 name、description、license 字段。
-- astro.config.mjs 中的 site。
-- src/theme/site.ts 中是否仍有个人域名、昵称或社交链接。
-- public/_redirects 中是否仍有旧域名。
-- public/images 中是否包含不希望公开的图片。
-- 是否已经添加 LICENSE 文件。
-- README 中是否已经补充 Demo 地址和截图。
+```text
+.
+├── .obsidian/             # Obsidian 写作配置
+├── public/
+│   ├── _redirects         # 路由跳转规则
+│   ├── favicon.svg
+│   └── images/
+│       ├── posts/         # 文章图片
+│       ├── projects/      # 项目图片
+│       ├── site/          # 分享图、预览图、关于页图片
+│       └── theme/         # Logo、头像、首页插画
+├── src/
+│   ├── content/blog/      # 文章、草稿与模板
+│   ├── content.config.ts  # 内容加载规则与字段定义
+│   ├── layouts/           # 页面布局
+│   ├── lib/               # 文章、SEO、索引工具
+│   ├── pages/             # 页面路由与内容接口
+│   └── theme/             # 主题配置、组件与样式
+├── astro.config.mjs
+├── package.json
+└── README.md
+```
 
 ## 贡献
 
-欢迎提交 issue 和 pull request。适合贡献的方向：
+欢迎提交 issue 和 pull request，改进构建、中文排版、移动端体验、可访问性、文档和内容发现能力。
 
-- 修复构建、样式或可访问性问题。
-- 改进中文排版和移动端体验。
-- 增加更清晰的文档和示例。
-- 优化 SEO、RSS、sitemap、llms.txt 等内容发现能力。
-- 提供不同风格的示例配置。
+Inkstone 以 Astro、标准 Markdown、CSS 和少量原生 JavaScript 为基础。新增依赖时，请说明它解决的具体问题及维护成本，帮助主题保持简单、易于定制。
 
-为了保持主题轻量，建议优先使用 Astro、标准 Markdown、CSS 和少量原生 JavaScript。新增依赖前请先说明使用场景和取舍。
+## 许可证
 
-## License
-
-[MIT](./LICENSE)
+[MIT](LICENSE)
